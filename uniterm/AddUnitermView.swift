@@ -1,23 +1,23 @@
 //
-//  UnitermAddValueView.swift
+//  AddUnitermView.swift
 //  uniterm
 //
-//  Created by Jan Chojnacki on 27/04/2025.
+//  Created by Jan Chojnacki on 28/04/2025.
 //
 
+import SwiftData
 import SwiftUI
 
-struct UnitermAddValueView: View {
+struct AddUnitermView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var providedValue: String = ""
 
-    let uniterm: Uniterm
     let onAdd: (String) -> Void
 
     var body: some View {
         VStack {
-            Text("Add Value Name")
+            Text("Add Uniterm Name")
                 .font(.headline)
             TextField("Name", text: $providedValue)
                 .padding(.bottom, 7)

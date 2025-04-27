@@ -1,42 +1,13 @@
 //
-//  UnitermNode.swift
+//  TreeNode.swift
 //  uniterm
 //
-//  Created by Jan Chojnacki on 02/04/2025.
+//  Created by Jan Chojnacki on 28/04/2025.
 //
+
 
 import Foundation
 import SwiftData
-
-@Model
-class Uniterm {
-    @Relationship(deleteRule: .cascade)
-    var root: TreeNode
-
-    var name: String
-
-    @Relationship(deleteRule: .cascade, inverse: \UnitermValue.uniterm)
-    var values: [UnitermValue] = []
-
-    init(name: String) {
-        self.root = TreeNode(item: NodeItem(operation: .error))
-
-        self.name = name
-    }
-}
-
-@Model
-class UnitermValue {
-    @Relationship
-    var uniterm: Uniterm
-
-    var value: String
-
-    init(uniterm: Uniterm, value: String) {
-        self.uniterm = uniterm
-        self.value = value
-    }
-}
 
 @Model
 class TreeNode {
@@ -94,25 +65,5 @@ class TreeNode {
         if right == child {
             right = nil
         }
-    }
-}
-
-enum OperationType: String, Codable {
-    case sequencing = "sequencing"
-    case parallelization = "parallelization"
-    case error = "error"
-}
-
-@Model
-class NodeItem {
-    var operation: OperationType? = nil
-    var value: String? = nil
-
-    init(operation: OperationType) {
-        self.operation = operation
-    }
-
-    init(value: String) {
-        self.value = value
     }
 }

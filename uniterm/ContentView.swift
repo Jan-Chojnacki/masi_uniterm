@@ -69,40 +69,6 @@ struct ContentView: View {
     }
 }
 
-struct AddUnitermView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var providedValue: String = ""
-
-    let onAdd: (String) -> Void
-
-    var body: some View {
-        VStack {
-            TextField("Nazwa", text: $providedValue)
-                .frame(width: 200)
-                .padding(.bottom, 7)
-            HStack {
-                Button("Cancel") {
-                    cancel()
-                }
-                Button("Add") {
-                    add()
-                }
-            }
-        }
-        .padding()
-    }
-
-    func cancel() {
-        dismiss()
-    }
-
-    func add() {
-        onAdd(providedValue)
-        dismiss()
-    }
-}
-
 #Preview {
     ContentView()
         .modelContainer(
