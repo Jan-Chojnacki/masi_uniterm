@@ -10,11 +10,12 @@ import SwiftData
 
 @Model
 class Uniterm {
+    @Relationship(deleteRule: .cascade)
     var root: TreeNode
 
     var name: String
 
-    @Relationship(inverse: \UnitermValue.uniterm)
+    @Relationship(deleteRule: .cascade, inverse: \UnitermValue.uniterm)
     var values: [UnitermValue] = []
 
     init(name: String) {
@@ -40,8 +41,14 @@ class UnitermValue {
 @Model
 class TreeNode {
     var item: NodeItem
+    
+    @Relationship(deleteRule: .nullify)
     var parent: TreeNode?
+    
+    @Relationship(deleteRule: .cascade)
     var left: TreeNode?
+    
+    @Relationship(deleteRule: .cascade)
     var right: TreeNode?
 
     init(
