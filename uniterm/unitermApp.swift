@@ -12,7 +12,10 @@ import SwiftData
 struct unitermApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Uniterm.self,
+            UnitermValue.self,
+            TreeNode.self,
+            NodeItem.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

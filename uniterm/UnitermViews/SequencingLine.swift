@@ -1,3 +1,11 @@
+//
+//  SequencingLine.swift
+//  uniterm
+//
+//  Created by Jan Chojnacki on 27/04/2025.
+//
+
+
 import SwiftUI
 
 struct SequencingLine: View {

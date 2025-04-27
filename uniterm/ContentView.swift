@@ -5,37 +5,46 @@
 //  Created by Jan Chojnacki on 02/04/2025.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [Uniterm]
+
+    @State private var isSheetShown = false
 
     var body: some View {
         NavigationSplitView {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        UnitermView(node: item.root, uniterm: item)
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(item.name)
                     }
                 }
                 .onDelete(perform: deleteItems)
             }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
+            #if os(macOS)
+                .navigationSplitViewColumnWidth(min: 180, ideal: 200)
+            #endif
             .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
+                #if os(iOS)
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        EditButton()
+                    }
+                #endif
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button {
+                        isSheetShown.toggle()
+                    } label: {
                         Label("Add Item", systemImage: "plus")
+                    }
+                    .sheet(isPresented: $isSheetShown) {
+                        AddUnitermView { name in
+                            addItem(name: name)
+                        }
                     }
                 }
             }
@@ -44,9 +53,9 @@ struct ContentView: View {
         }
     }
 
-    private func addItem() {
+    private func addItem(name: String) {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Uniterm(name: name)
             modelContext.insert(newItem)
         }
     }
@@ -60,7 +69,46 @@ struct ContentView: View {
     }
 }
 
+struct AddUnitermView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var providedValue: String = ""
+
+    let onAdd: (String) -> Void
+
+    var body: some View {
+        VStack {
+            TextField("Nazwa", text: $providedValue)
+                .frame(width: 200)
+                .padding(.bottom, 7)
+            HStack {
+                Button("Cancel") {
+                    cancel()
+                }
+                Button("Add") {
+                    add()
+                }
+            }
+        }
+        .padding()
+    }
+
+    func cancel() {
+        dismiss()
+    }
+
+    func add() {
+        onAdd(providedValue)
+        dismiss()
+    }
+}
+
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(
+            for: [
+                Uniterm.self,
+                TreeNode.self,
+                NodeItem.self,
+            ], inMemory: true)
 }

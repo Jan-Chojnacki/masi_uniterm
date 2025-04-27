@@ -1,3 +1,11 @@
+//
+//  ParallelizationLine.swift
+//  uniterm
+//
+//  Created by Jan Chojnacki on 27/04/2025.
+//
+
+
 import SwiftUI
 
 struct ParallelizationLine: View {

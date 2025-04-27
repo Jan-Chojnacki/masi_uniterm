@@ -1,13 +1,20 @@
+//
+//  UnitermAddValueView.swift
+//  uniterm
+//
+//  Created by Jan Chojnacki on 27/04/2025.
+//
+
+
 import SwiftUI
 
 struct UnitermAddValueView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
 
     @State private var providedValue: String = ""
 
     let uniterm: Uniterm
-    let onAdd: (NodeItem) -> Void
+    let onAdd: (String) -> Void
 
     var body: some View {
         VStack {
@@ -32,9 +39,10 @@ struct UnitermAddValueView: View {
     }
 
     func add() {
-        let value = UnitermValue(uniterm: uniterm, value: providedValue)
-        modelContext.insert(value)
-        onAdd(NodeItem(value: value.value))
+        if providedValue.isEmpty {
+            return
+        }
+        onAdd(providedValue)
         dismiss()
     }
 }

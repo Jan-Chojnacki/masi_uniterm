@@ -1,6 +1,15 @@
+//
+//  UnitermAddButton.swift
+//  uniterm
+//
+//  Created by Jan Chojnacki on 27/04/2025.
+//
+
+
 import SwiftUI
 
 struct UnitermAddButton: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var isSheetPresented = false
 
     let uniterm: Uniterm
@@ -33,7 +42,9 @@ struct UnitermAddButton: View {
         .buttonStyle(.plain)
         .sheet(isPresented: $isSheetPresented) {
             UnitermAddValueView(uniterm: uniterm) { newItem in
-                onAdd(newItem)
+                let value = UnitermValue(uniterm: uniterm, value: newItem)
+                modelContext.insert(value)
+                onAdd(NodeItem(value: value.value))
             }
         }
         .presentationDetents([.medium])
